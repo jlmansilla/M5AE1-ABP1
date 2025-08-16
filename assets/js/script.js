@@ -115,3 +115,14 @@ var consultorio1 = new Consultorio('Consultorio Central', [paciente1, paciente2,
 
 // Mostrar todos los pacientes
 consultorio1.mostrarTodosLosPacientes();
+
+//filtro
+const filtroPacientes = document.getElementById("filtroPacientes");
+if (filtroPacientes) {  
+    filtroPacientes.addEventListener("input", (e) => {
+        const pacientesFiltrados = pacientes.filter(paciente => {
+            return paciente.nombre.toLowerCase().includes(e.target.value.toLowerCase())
+        });
+        mostrarPacientes(pacientesFiltrados);
+    });
+}

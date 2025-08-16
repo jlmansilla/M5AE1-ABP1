@@ -9,9 +9,34 @@
 <body>
     <div class="container">
         <header></header>
-        <main></main>
+        <main>
+                <div class="row" id="filtroPacientes">
+                <div class="col-12">
+                    <input type="text" class="form-control" placeholder="Buscar paciente" id="filtroPacientes">
+                </div>
+            </div>
+            <div class="row" id="tablaPacientes">
+                <div class="col-12">
+                    <table class="table table-striped">
+                </div>
+                <div class="col-12">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Nombre</th>
+                                <th>Edad</th>
+                                <th>RUT</th>
+                                <th>Diagnóstico</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tablaPacientes">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
         <footer></footer>
     </div>
-    <script src="assets/js/script.js"></script>
+    <script src="assets/js/script.js"></script> 
 </body>
 </html>
