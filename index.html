@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
     <title>Consultorio</title>
     <link rel="stylesheet" href="assets/css/style.css">
 </head>
@@ -10,18 +11,18 @@
     <div class="container">
         <header></header>
         <main>
-                <div class="row" id="filtroPacientes">
+            <!-- Filtro de búsqueda -->
+            <div class="row mb-3">
                 <div class="col-12">
-                    <input type="text" class="form-control" placeholder="Buscar paciente" id="filtroPacientes">
+                    <input type="text" id="filtroPacientes" placeholder="Buscar paciente por nombre..." class="form-control">
                 </div>
             </div>
-            <div class="row" id="tablaPacientes">
+            
+            <!-- Tabla de pacientes -->
+            <div class="row">
                 <div class="col-12">
                     <table class="table table-striped">
-                </div>
-                <div class="col-12">
-                    <table class="table table-striped">
-                        <thead>
+                        <thead class="table-dark">
                             <tr>
                                 <th>Nombre</th>
                                 <th>Edad</th>
@@ -30,6 +31,7 @@
                             </tr>
                         </thead>
                         <tbody id="tablaPacientes">
+                            <!-- Los datos se cargarán aquí via JavaScript -->
                         </tbody>
                     </table>
                 </div>
@@ -37,6 +39,7 @@
         </main>
         <footer></footer>
     </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
     <script src="assets/js/script.js"></script> 
 </body>
 </html>

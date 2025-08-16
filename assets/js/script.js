@@ -74,34 +74,25 @@ Consultorio.prototype.mostrarTodosLosPacientes = function() {
     datos.push(registro);
   }
   
-  // 2. LUEGO escribir la tabla completa
-  document.writeln('<table class="table table-striped">');
-  document.writeln('<thead class="table-dark">');
-  document.writeln('<tr>');
-  document.writeln('<th>Nombre</th>');
-  document.writeln('<th>Edad</th>');
-  document.writeln('<th>RUT</th>');
-  document.writeln('<th>Diagnóstico</th>');
-  document.writeln('</tr>');
-  document.writeln('</thead>');
-  document.writeln('<tbody>');
+  // 2. Usar la tabla existente en el HTML
+  var tbody = document.getElementById('tablaPacientes');
   
-  // 3. AHORA iterar sobre datos que ya tiene contenido
-  for (var j = 0; j < datos.length; j++) {
-    var registro = datos[j];
-    document.writeln('<tr>');
-    document.writeln(
-      '<td>' + registro.nombre + '</td>' +
-      '<td>' + registro.edad + '</td>' +
-      '<td>' + registro.rut + '</td>' +
-      '<td>' + registro.diagnostico + '</td>'
-    );
-    document.writeln('</tr>');
+  if (tbody) {
+    // Limpiar solo el tbody
+    tbody.innerHTML = '';
+    
+    // 3. Agregar filas de datos
+    for (var j = 0; j < datos.length; j++) {
+      var registro = datos[j];
+      var fila = document.createElement('tr');
+      fila.innerHTML = 
+        '<td>' + registro.nombre + '</td>' +
+        '<td>' + registro.edad + '</td>' +
+        '<td>' + registro.rut + '</td>' +
+        '<td>' + registro.diagnostico + '</td>';
+      tbody.appendChild(fila);
+    }
   }
-  
-  // 4. CERRAR la tabla
-  document.writeln('</tbody>');
-  document.writeln('</table>');
   
   return datos;
 };
@@ -116,13 +107,87 @@ var consultorio1 = new Consultorio('Consultorio Central', [paciente1, paciente2,
 // Mostrar todos los pacientes
 consultorio1.mostrarTodosLosPacientes();
 
-//filtro
-const filtroPacientes = document.getElementById("filtroPacientes");
-if (filtroPacientes) {  
-    filtroPacientes.addEventListener("input", (e) => {
-        const pacientesFiltrados = pacientes.filter(paciente => {
-            return paciente.nombre.toLowerCase().includes(e.target.value.toLowerCase())
+// Configurar filtro cuando la página esté lista (ES5 estricto)
+function configurarFiltro() {
+    var filtroPacientes = document.getElementById("filtroPacientes");
+    if (filtroPacientes) {
+        filtroPacientes.addEventListener("input", function(e) {
+            var valorFiltro = e.target.value.toLowerCase();
+            
+            if (valorFiltro === '') {
+                // Si el filtro está vacío, restaurar todos los pacientes
+                restaurarTodosLosPacientes();
+            } else {
+                // Aplicar filtro
+                var pacientesFiltrados = consultorio1.getPacientes().filter(function(paciente) {
+                    return paciente.getNombre().toLowerCase().indexOf(valorFiltro) !== -1;
+                });
+                mostrarPacientesFiltrados(pacientesFiltrados);
+            }
         });
-        mostrarPacientes(pacientesFiltrados);
-    });
+    } else {
+        console.log('Elemento de filtro no encontrado. Asegúrate de tener un input con id="filtroPacientes"');
+    }
+}
+
+// Esperar a que el DOM esté listo (ES5 estricto)
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', configurarFiltro);
+} else {
+    configurarFiltro();
+}
+
+// Función para mostrar pacientes filtrados
+function mostrarPacientesFiltrados(pacientes) {
+    // Usar específicamente la tabla con Bootstrap
+    var tbody = document.getElementById('tablaPacientes');
+    
+    if (tbody) {
+        // Limpiar solo el tbody
+        tbody.innerHTML = '';
+        
+        // Agregar las filas filtradas
+        for (var i = 0; i < pacientes.length; i++) {
+            var p = pacientes[i];
+            var fila = document.createElement('tr');
+            fila.innerHTML = 
+                '<td>' + p.getNombre() + '</td>' +
+                '<td>' + p.getEdad() + '</td>' +
+                '<td>' + p.getRut() + '</td>' +
+                '<td>' + p.getDiagnostico() + '</td>';
+            tbody.appendChild(fila);
+        }
+        
+        // Si no hay resultados, mostrar mensaje
+        if (pacientes.length === 0) {
+            var filaVacia = document.createElement('tr');
+            filaVacia.innerHTML = '<td colspan="4" class="text-center">No se encontraron pacientes</td>';
+            tbody.appendChild(filaVacia);
+        }
+    }
+}
+
+// Función para restaurar todos los pacientes
+function restaurarTodosLosPacientes() {
+    var tbody = document.getElementById('tablaPacientes');
+    
+    if (tbody) {
+        // Limpiar solo el tbody
+        tbody.innerHTML = '';
+        
+        // Obtener todos los pacientes
+        var todosLosPacientes = consultorio1.getPacientes();
+        
+        // Agregar todas las filas
+        for (var i = 0; i < todosLosPacientes.length; i++) {
+            var p = todosLosPacientes[i];
+            var fila = document.createElement('tr');
+            fila.innerHTML = 
+                '<td>' + p.getNombre() + '</td>' +
+                '<td>' + p.getEdad() + '</td>' +
+                '<td>' + p.getRut() + '</td>' +
+                '<td>' + p.getDiagnostico() + '</td>';
+            tbody.appendChild(fila);
+        }
+    }
 }
